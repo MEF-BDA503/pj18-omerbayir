@@ -1,6 +1,6 @@
 ---
 title: "RMarkDown Examples related to Week1 Home Work"
-author: "Ömer Bayýr"
+author: "Ã–mer BayÃ½r"
 date: "14 Ekim 2018"
 output:
   html_document:
@@ -9,7 +9,7 @@ output:
 
 ## About Myself
 
-I am Ömer Bayýr. I have been working for Avivasa IT department as Business Intelligence Unit manager. 
+I am Ã–mer BayÃ½r. I have been working for Avivasa IT department as Business Intelligence Unit manager. 
 Shortly, I am reponsible for managing data driven projects, system architecture  and data  architecture; budget and people management also included. My vision is develop myself and my company/my teams to use new methods other than traditional BI methods and techniques. Also, develop my company about how to find and refine/analyze big data.  
 
 Below, you can find 3 examples about R and how you can use it in Data Science and Insurance.  
