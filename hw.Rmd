@@ -1,0 +1,34 @@
+---
+title: "RMarkDown Examples related to Week1 Home Work"
+author: "Ömer Bayýr"
+date: "14 Ekim 2018"
+output:
+  html_document:
+    df_print: paged
+---
+
+## About Myself
+
+I am Ömer Bayýr. I have been working for Avivasa IT department as Business Intelligence Unit manager. 
+Shortly, I am reponsible for managing data driven projects, system architecture  and data  architecture; budget and people management also included. My vision is develop myself and my company/my teams to use new methods other than traditional BI methods and techniques. Also, develop my company about how to find and refine/analyze big data.  
+
+Below, you can find 3 examples about R and how you can use it in Data Science and Insurance.  
+
+## Mortality . StMoMo: An R Package for Stochastic Mortality Modelling
+Mortality means life expectancy, can be used in insurance to predict pension or life risk risk prediction.
+In this video, you can find diffrent types of models to predict life expentancy. It introduce an R package how we use for the models. StMoMo package implements majortiy of sochastic mortality models. 
+
+<a href="https://youtu.be/prk-0G689GU">StMoMo package</a>
+
+## R for new users
+The video below, you can find about R history and a lot more about how you use R.
+
+<a href="https://youtu.be/5033jBHFiHE">R for New Users</a>
+
+
+
+## Tree-Based Machine Learning for Insurance Pricing
+Insurance pricing depends on predictions of a series of features. In this video tells us some algorithms suitable for insurance data. Explained technique uses R packages (data.table, hash, paralel, ggplot2 )  
+
+<a href="https://youtu.be/z1AlNGXGz9A">Insurance Pricing with Machine Learning in R</a>
+
