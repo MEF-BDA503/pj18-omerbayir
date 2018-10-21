@@ -1,5 +1,5 @@
 ---
-title: "Week-2 ODD 2018 August Data Analysis"
+title: "Week-2 ODD 2018 April Data Analysis"
 author: "Ömer Bayır"
 date: "20 Ekim 2018"
 output: html_document
@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## ODD 2018 August Data Analaysis
+## ODD 2018 April Data Analaysis
 In week-2 home work we had ODD sales data in Excel. After removing header and footer columns in excel, 
 you can load the data in your R worksapce via the code below 
 
@@ -18,7 +18,7 @@ you can load the data in your R worksapce via the code below
 # Load the package to the session
 library(tidyverse)
 library(readxl)
-raw_data <- read_excel("201808.xlsx", col_names = FALSE) ## my excel file name is 201808.xlsx
+raw_data <- read_excel("201804.xlsx", col_names = FALSE) ## my excel file name is 201804.xlsx
                                                          ## also you should check your working directory
 
 
@@ -30,30 +30,30 @@ As seen below :
 ```{r cars2}
 colnames(raw_data) <- c("brand_name","auto_dom","auto_imp","auto_total","comm_dom","comm_imp","comm_total","total_dom","total_imp","total_total")
 
-car_data_aug_18 <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) %>% mutate(year=2018,month=8)
+car_data_april_18 <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) %>% mutate(year=2018,month=4)
 
-saveRDS(car_data_aug_18,file="odd_car_sales_data_aug_18.rds")
+saveRDS(car_data_april_18,file="odd_car_sales_data_april_18.rds")
 
 ```
 After loading our data frame I've made two analysis. 
 
 ```{r cars3}
-car_data_aug_18 %>%
+car_data_april_18 %>%
   tbl_df()
 
 
 
 ## First Analysis
-car_data_aug_18 %>% select(year, month, brand_name, total_total) %>% 
+car_data_april_18 %>% select(year, month, brand_name, total_total) %>% 
   mutate(all_Total=sum(total_total),percentage=total_total/sum(total_total)*100 ) %>%  
     filter(total_total==min(total_total) | total_total==max(total_total))  
 ```
   
-In the first analysis you can see the best performed brand and the worst brands. Their percentage of total sold car in August 2018 can be shown.   
+In the first analysis you can see the best performed brand and the worst brands. Their percentage of total sold car in April 2018 can be shown.   
 
 ```{r cars4}
 ## Second Analysis
-car_data_aug_18 %>% select(year, month, brand_name, total_total) %>% 
+car_data_april_18 %>% select(year, month, brand_name, total_total) %>% 
   mutate(percentage=total_total/sum(total_total)*100 ) %>%  
   arrange(desc(percentage)) %>% slice(1:10)
 ```
