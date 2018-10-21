@@ -11,4 +11,4 @@ Here is my introduction and R posts related to R and my work.
 ### Week2
 We made data analysis with Tidyverse package.    
 Week-2 home work [ODD April 2018 car sales analysis](week2/week2.html)<br>
-[My R data file for the term 2018 April](week2/https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/odd_car_sales_data_april_18.rds)<br>
+[You can get my R data file for the term 2018 April from here](week2/https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/odd_car_sales_data_april_18.rds)<br>
