@@ -35,6 +35,9 @@ car_data_april_18 <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.)
 saveRDS(car_data_april_18,file="odd_car_sales_data_april_18.rds")
 
 ```
+You can get  <a href="https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/odd_car_sales_data_april_18.rds">the R data file from here</a>
+
+
 After loading our data frame I've made two analysis. 
 
 ```{r cars3}

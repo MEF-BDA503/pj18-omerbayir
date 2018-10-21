@@ -336,6 +336,7 @@ raw_data &lt;- read_excel(&quot;201804.xlsx&quot;, col_names = FALSE) ## my exce
 car_data_april_18 &lt;- raw_data %&gt;% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) %&gt;% mutate(year=2018,month=4)
 
 saveRDS(car_data_april_18,file=&quot;odd_car_sales_data_april_18.rds&quot;)</code></pre>
+<p>You can get <a href="https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/odd_car_sales_data_april_18.rds">the R data file from here</a></p>
 <p>After loading our data frame I’ve made two analysis.</p>
 <pre class="r"><code>car_data_april_18 %&gt;%
   tbl_df()</code></pre>
