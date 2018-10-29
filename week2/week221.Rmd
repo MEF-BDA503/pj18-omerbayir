@@ -1,0 +1,74 @@
+---
+title: "Week-2 -2018 April ODD Data Analysis"
+author: "Ömer Bayır"
+date: "29 Ekim 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## ODD 2018 April Data Analaysis
+In week-2 home work we had ODD sales data in Excel. After removing header and footer columns in excel, 
+you can load the data in your R worksapce via the code below 
+
+```{r cars}
+#install.packages("tidyverse", repos = "https://cran.r-project.org") 
+##if installed it is not essential
+# Load the package to the session
+library(tidyverse)
+library(readxl)
+# Download file from repository to the temp file
+# Remove the temp file
+tmp<-tempfile(fileext=".xlsx")
+download.file("https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/201804.xlsx?raw=true",destfile=tmp,mode = 'wb')
+raw_data<-readxl::read_excel(tmp,skip=7,col_names=FALSE)
+file.remove(tmp)
+## my excel file name is 201804.xlsx
+## raw_data <- read_excel("201804.xlsx", col_names = FALSE) 
+## you can do the same thing  with this code but also you should check your working directory
+
+# Remove the last two rows because they are irrelevant (total and empty rows)
+# Let's see our raw data
+head(raw_data)
+```
+We required to name our data columns with standardised names. Also if we have NA cells we replaced with them 0 or '.' .
+My RDS file is ready and  waiting to be merged by merger classmate. 
+As seen below :
+
+```{r cars2}
+colnames(raw_data) <- c("brand_name","auto_dom","auto_imp","auto_total","comm_dom","comm_imp","comm_total","total_dom","total_imp","total_total")
+
+car_data_april_18 <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) %>% mutate(year=2018,month=4)
+
+saveRDS(car_data_april_18,file="odd_car_sales_data_april_18.rds")
+
+```
+You can get  <a href="https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/odd_car_sales_data_april_18.rds">the R data file from here</a>
+
+
+After loading our data frame I've made two analysis. 
+
+```{r cars3}
+car_data_april_18 %>%
+  tbl_df()
+
+
+
+## First Analysis
+car_data_april_18 %>% select(year, month, brand_name, total_total) %>% 
+  mutate(all_Total=sum(total_total),percentage=total_total/sum(total_total)*100 ) %>%  
+    filter(total_total==min(total_total) | total_total==max(total_total))  
+```
+  
+In the first analysis you can see the best performed brand and the worst brands. Their percentage of total sold car in April 2018 can be shown.   
+
+```{r cars4}
+## Second Analysis
+car_data_april_18 %>% select(year, month, brand_name, total_total) %>% 
+  mutate(percentage=total_total/sum(total_total)*100 ) %>%  
+  arrange(desc(percentage)) %>% slice(1:10)
+```
+  
+Second analysis shows us total sales brand by brand and their percentage of total sales. The analysis shows only the top ten performer brands.
