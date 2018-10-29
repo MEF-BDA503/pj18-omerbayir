@@ -1,6 +1,6 @@
 ---
 title: "Week-2 ODD 2018 April Data Analysis"
-author: "Ã–mer BayÄ±r"
+author: "Ömer Bayýr"
 date: "20 Ekim 2018"
 output: html_document
 ---
@@ -14,14 +14,24 @@ In week-2 home work we had ODD sales data in Excel. After removing header and fo
 you can load the data in your R worksapce via the code below 
 
 ```{r cars}
-#install.packages("tidyverse", repos = "https://cran.r-project.org") ##if installed it is not essential
+#install.packages("tidyverse", repos = "https://cran.r-project.org") 
+##if installed it is not essential
 # Load the package to the session
 library(tidyverse)
 library(readxl)
-raw_data <- read_excel("201804.xlsx", col_names = FALSE) ## my excel file name is 201804.xlsx
-                                                         ## also you should check your working directory
+# Download file from repository to the temp file
+# Remove the temp file
+tmp<-tempfile(fileext=".xlsx")
+download.file("https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/201804.xlsx?raw=true",destfile=tmp,mode = 'wb')
+raw_data<-readxl::read_excel(tmp,skip=7,col_names=FALSE)
+file.remove(tmp)
+## my excel file name is 201804.xlsx
+## raw_data <- read_excel("201804.xlsx", col_names = FALSE) 
+## you can do the sam thing above code but also you should check your working directory
 
-
+# Remove the last two rows because they are irrelevant (total and empty rows)
+# Let's see our raw data
+head(raw_data)
 ```
 We required to name our data columns with standardised names. Also if we have NA cells we replaced with them 0 or '.' .
 My RDS file is ready and  waiting to be merged by merger classmate. 

@@ -316,7 +316,8 @@ $(document).ready(function () {
 <div id="odd-2018-april-data-analaysis" class="section level2">
 <h2>ODD 2018 April Data Analaysis</h2>
 <p>In week-2 home work we had ODD sales data in Excel. After removing header and footer columns in excel, you can load the data in your R worksapce via the code below</p>
-<pre class="r"><code>#install.packages(&quot;tidyverse&quot;, repos = &quot;https://cran.r-project.org&quot;) ##if installed it is not essential
+<pre class="r"><code>#install.packages(&quot;tidyverse&quot;, repos = &quot;https://cran.r-project.org&quot;) 
+##if installed it is not essential
 # Load the package to the session
 library(tidyverse)</code></pre>
 <pre><code>## -- Attaching packages ------------------------------------------------------------ tidyverse 1.2.1 --</code></pre>
@@ -328,8 +329,29 @@ library(tidyverse)</code></pre>
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(readxl)
-raw_data &lt;- read_excel(&quot;201804.xlsx&quot;, col_names = FALSE) ## my excel file name is 201804.xlsx
-                                                         ## also you should check your working directory</code></pre>
+# Download file from repository to the temp file
+# Remove the temp file
+tmp&lt;-tempfile(fileext=&quot;.xlsx&quot;)
+download.file(&quot;https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week2/201804.xlsx?raw=true&quot;,destfile=tmp,mode = 'wb')
+raw_data&lt;-readxl::read_excel(tmp,skip=7,col_names=FALSE)
+file.remove(tmp)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>## my excel file name is 201804.xlsx
+## raw_data &lt;- read_excel(&quot;201804.xlsx&quot;, col_names = FALSE) 
+## you can do the sam thing above code but also you should check your working directory
+
+# Remove the last two rows because they are irrelevant (total and empty rows)
+# Let's see our raw data
+head(raw_data)</code></pre>
+<pre><code>## # A tibble: 6 x 10
+##   X__1     X__2  X__3  X__4  X__5  X__6  X__7  X__8  X__9 X__10
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 DS         NA    20    20    NA    NA     0     0    20    20
+## 2 FERRARI    NA     3     3    NA    NA     0     0     3     3
+## 3 FIAT     4175   130  4305  3183   249  3432  7358   379  7737
+## 4 FORD      280  2506  2786  4301   247  4548  4581  2753  7334
+## 5 HONDA    1881   646  2527    NA    NA     0  1881   646  2527
+## 6 HYUNDAI  1631  2555  4186    NA   215   215  1631  2770  4401</code></pre>
 <p>We required to name our data columns with standardised names. Also if we have NA cells we replaced with them 0 or ‘.’ . My RDS file is ready and waiting to be merged by merger classmate. As seen below :</p>
 <pre class="r"><code>colnames(raw_data) &lt;- c(&quot;brand_name&quot;,&quot;auto_dom&quot;,&quot;auto_imp&quot;,&quot;auto_total&quot;,&quot;comm_dom&quot;,&quot;comm_imp&quot;,&quot;comm_total&quot;,&quot;total_dom&quot;,&quot;total_imp&quot;,&quot;total_total&quot;)
 
@@ -340,30 +362,30 @@ saveRDS(car_data_april_18,file=&quot;odd_car_sales_data_april_18.rds&quot;)</cod
 <p>After loading our data frame I’ve made two analysis.</p>
 <pre class="r"><code>car_data_april_18 %&gt;%
   tbl_df()</code></pre>
-<pre><code>## # A tibble: 42 x 12
+<pre><code>## # A tibble: 35 x 12
 ##    brand_name auto_dom auto_imp auto_total comm_dom comm_imp comm_total
 ##    &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-##  1 ALFA ROMEO        0       32         32        0        0          0
-##  2 ASTON MAR~        0        1          1        0        0          0
-##  3 AUDI              0     1625       1625        0        0          0
-##  4 BENTLEY           0        0          0        0        0          0
-##  5 BMW               0     1270       1270        0        0          0
-##  6 CITROEN           0      615        615        0      406        406
-##  7 DACIA             0     3199       3199        0      337        337
-##  8 DS                0       20         20        0        0          0
-##  9 FERRARI           0        3          3        0        0          0
-## 10 FIAT           4175      130       4305     3183      249       3432
-## # ... with 32 more rows, and 5 more variables: total_dom &lt;dbl&gt;,
+##  1 DS                0       20         20        0        0          0
+##  2 FERRARI           0        3          3        0        0          0
+##  3 FIAT           4175      130       4305     3183      249       3432
+##  4 FORD            280     2506       2786     4301      247       4548
+##  5 HONDA          1881      646       2527        0        0          0
+##  6 HYUNDAI        1631     2555       4186        0      215        215
+##  7 INFINITI          0        2          2        0        0          0
+##  8 ISUZU             0        0          0      161       19        180
+##  9 IVECO             0        0          0        0      146        146
+## 10 JAGUAR            0       18         18        0        0          0
+## # ... with 25 more rows, and 5 more variables: total_dom &lt;dbl&gt;,
 ## #   total_imp &lt;dbl&gt;, total_total &lt;dbl&gt;, year &lt;dbl&gt;, month &lt;dbl&gt;</code></pre>
 <pre class="r"><code>## First Analysis
 car_data_april_18 %&gt;% select(year, month, brand_name, total_total) %&gt;% 
   mutate(all_Total=sum(total_total),percentage=total_total/sum(total_total)*100 ) %&gt;%  
     filter(total_total==min(total_total) | total_total==max(total_total))  </code></pre>
 <pre><code>## # A tibble: 2 x 6
-##    year month brand_name total_total all_Total percentage
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-## 1  2018     4 BENTLEY              0     71126        0  
-## 2  2018     4 RENAULT          11161     71126       15.7</code></pre>
+##    year month brand_name  total_total all_Total percentage
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1  2018     4 LAMBORGHINI           1     63641    0.00157
+## 2  2018     4 RENAULT           11161     63641   17.5</code></pre>
 <p>In the first analysis you can see the best performed brand and the worst brands. Their percentage of total sold car in April 2018 can be shown.</p>
 <pre class="r"><code>## Second Analysis
 car_data_april_18 %&gt;% select(year, month, brand_name, total_total) %&gt;% 
@@ -372,16 +394,16 @@ car_data_april_18 %&gt;% select(year, month, brand_name, total_total) %&gt;%
 <pre><code>## # A tibble: 10 x 5
 ##     year month brand_name    total_total percentage
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt;
-##  1  2018     4 RENAULT             11161      15.7 
-##  2  2018     4 VOLKSWAGEN           7790      11.0 
-##  3  2018     4 FIAT                 7737      10.9 
-##  4  2018     4 FORD                 7334      10.3 
-##  5  2018     4 HYUNDAI              4401       6.19
-##  6  2018     4 DACIA                3536       4.97
-##  7  2018     4 OPEL                 3476       4.89
-##  8  2018     4 PEUGEOT              3392       4.77
-##  9  2018     4 TOYOTA               3230       4.54
-## 10  2018     4 MERCEDES-BENZ        2702       3.80</code></pre>
+##  1  2018     4 RENAULT             11161      17.5 
+##  2  2018     4 VOLKSWAGEN           7790      12.2 
+##  3  2018     4 FIAT                 7737      12.2 
+##  4  2018     4 FORD                 7334      11.5 
+##  5  2018     4 HYUNDAI              4401       6.92
+##  6  2018     4 OPEL                 3476       5.46
+##  7  2018     4 PEUGEOT              3392       5.33
+##  8  2018     4 TOYOTA               3230       5.08
+##  9  2018     4 MERCEDES-BENZ        2702       4.25
+## 10  2018     4 HONDA                2527       3.97</code></pre>
 <p>Second analysis shows us total sales brand by brand and their percentage of total sales. The analysis shows only the top ten performer brands.</p>
 </div>
 
