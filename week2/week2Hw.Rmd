@@ -1,7 +1,7 @@
 ---
 title: "Week-2 ODD 2018 April Data Analysis"
 author: "Ömer Bayýr"
-date: "20 Ekim 2018"
+date: "29 Ekim 2018"
 output: html_document
 ---
 
