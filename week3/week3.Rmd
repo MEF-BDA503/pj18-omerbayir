@@ -1,0 +1,59 @@
+---
+title: "EGM (Pension Monitoring Center) Data Analysis"
+author: "Ömer Bayır"
+date: "11 Kasım 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## EGM (Pension Monitoring Center) Data Analysis
+
+EGM is responsible monitoring and controlling Pension System in Turkey. EGM shares data about pension system from its website. We have summary data about pension funds, participants and contribution etc. 
+We made two analysis and visiulation abaout Avivasa Emeklilik Hayat, which is the leader in the market.
+
+```{r cars}
+library(tidyverse)
+library(dplyr)
+library(readxl)
+tmp<-tempfile(fileext=".xlsx")
+download.file("https://github.com/MEF-BDA503/pj18-omerbayir/blob/master/week3/egm_example_data.xlsx?raw=true",destfile=tmp,mode = 'wb')
+raw_data<-readxl::read_excel(tmp,skip=7,col_names=FALSE)
+file.remove(tmp)
+head(raw_data)
+
+colnames(raw_data) <- c("date","pension_fund_company","n_of_participants","fund_size_participants","gov_contribution","contribution","n_of_pensioners","n_of_ind_contracts","n_of_group_ind_contracts","n_of_employer_group_certificates","n_total","size_of_ind_contracts","size_of_group_ind_contracts","size_of_employer_group_certificates","size_total")
+
+# Now we replace NA values with 0 and label the time period with year and month, so when we merge the data we won't be confused.
+egm_data <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) 
+
+```
+
+
+
+```
+
+## Avivasa's Participants Plot
+The line graph below shows Avivasa's participants count day to day depending on the data.
+
+## Pension companies that have higher fund than average
+The chart below shows avarage fund for every companies participants. After that elimates the companies that they have   below the market's avarage fund volume.
+
+```{r pressure, echo=FALSE}
+
+egm_data%>%filter(pension_fund_company=="Avivasa Emeklilik ve Hayat") %>% 
+  ggplot(data=. , aes(x = 1:nrow(.),y = n_of_participants)) + geom_line() + labs(x = "Day Number", y="Participants")
+
+egm_data %>% mutate(all_fund_avg = mean(fund_size_participants)) %>%
+  group_by(pension_fund_company,all_fund_avg) %>% 
+  summarise( x=mean(fund_size_participants)  )  %>%
+  
+select(pension_fund_company,all_fund_avg,x) %>% 
+  filter(all_fund_avg<x) %>%
+  ggplot(data = ., aes(x = pension_fund_company, y = x, fill = pension_fund_company)) + geom_bar(stat = "identity")+ ylab("Number of Distinct Customers")  + xlab("Companies") 
+
+
+
+```
