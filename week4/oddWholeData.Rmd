@@ -1,0 +1,66 @@
+---
+title: "ODD Data Analysis"
+author: "Ömer Bayır"
+date: "24 Kasım 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## ODD Data Analaysis-II
+In week-2 home work we had ODD sales data in Excel for one month. We have copmltede data now.
+Codes below makes file operations and excludes unsuitable rows from data.
+Also makes new date column.
+
+```{r cars}
+library(tidyverse)
+library(ggplot2)
+library(lubridate
+        )
+tmp<-tempfile(fileext=".rds")
+
+download.file("https://github.com/MEF-BDA503/mef-bda503.github.io/blob/master/files/car_data_aggregate.rds?raw=true",destfile=tmp,mode = 'wb')
+raw_data<-read_rds(tmp)
+file.remove(tmp)
+head(raw_data)
+colnames(raw_data) <- c("brand_name","auto_dom","auto_imp","auto_total","comm_dom","comm_imp","comm_total","total_dom","total_imp","total_total","year","month")
+car_data <- raw_data %>% mutate_if(is.numeric,funs(ifelse(is.na(.),0,.))) 
+
+car_data <- car_data  %>% 
+  filter(!(year==2017 & month==2 & total_dom==0 & total_imp==0 & total_total==0) ) %>%
+  filter(brand_name != "TOPLAM:")
+car_data <- car_data %>% mutate(day=1)
+car_data <- car_data %>% mutate(date=paste(year, month, day, sep="-")) %>% mutate(date= ymd(date))  
+
+```
+
+I want to explore total sales trend for the best twelve brand. For that reason, I need best twelve brand in total sales.
+
+```{r cars2}
+cardataSummaryOrder <- car_data %>% 
+  group_by(brand_name) %>% 
+  summarise(total_total=sum(total_total)) %>%
+  arrange(desc(total_total)) %>%
+  slice(1:12)
+```
+If we have total sales values per date and brand, we can check which brands in top 12.
+Below codes makes aggregation on data and outputs best 12 brands and their monthly total data.
+
+```{r cars3}
+cardataSummaryBrand <- car_data %>% 
+  group_by(brand_name, date) %>% 
+  summarise(total_total=sum(total_total)) 
+
+cardatasummaryBrandforP <- semi_join(cardataSummaryBrand, cardataSummaryOrder,by="brand_name")
+```
+
+The visualization below shows us, genaral total sales trend for best performed brands. 
+Trend lines tells us, all brands increase or decreases their sales at the same time. 
+We couldn't see any increase or decrease that only one brand has this fluctuation,
+generally brands sales moved to the same way simultaneously.
+
+```{r pressure, echo=FALSE}
+ggplot(cardatasummaryBrandforP,aes(x = date,y = total_total, colour = brand_name)) + geom_line() +facet_wrap(~brand_name)
+```
