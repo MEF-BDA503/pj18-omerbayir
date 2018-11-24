@@ -16,3 +16,7 @@ Week-2 home work [ODD April 2018 car sales analysis](week2/week221.html)<br>
 ### Week3
 We made data analysis and visiulation with Tidyverse package.    
 [Week-3 EGM data is here](week3/week3.html)<br>
+
+### Week4
+ODD whole data set analysis home work is below : 
+[ODD whole data anlaysis](week4/oddWholeData.html)<br>
