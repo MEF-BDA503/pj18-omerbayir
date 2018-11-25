@@ -19,4 +19,4 @@ We made data analysis and visiulation with Tidyverse package.
 
 ### Week4
 ODD whole data set analysis home work is : <br>
-[ODD whole data anlaysis](week4/oddWholeData.html)<br>
+[ODD whole data anlaysis](week4/oddWholeDatav2.html)<br>
